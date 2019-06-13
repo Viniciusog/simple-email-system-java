@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -18,8 +20,22 @@ public class EnviarEmail extends JFrame implements ActionListener {
 
 	private String senha;
 	private String email;
-	private JPasswordField campoSenha = new JPasswordField();
+	private String mensagem;
+	private String destinatario;
+	private String titulo;
+
+	private JLabel lblTitulo = new JLabel("Insira um Título ");
+	private JLabel lblMensagem = new JLabel("Escreva uma mensagem ");
+	private JLabel lblDestinatario = new JLabel("Destinatário ");
+	private JLabel lblEmail = new JLabel("Seu email");
+	private JLabel lblSenha = new JLabel("Sua senha");
+
+	private JTextField txtTitulo = new JTextField();
 	private JTextField txtEmail = new JTextField();
+	private JTextField txtDestinatario = new JTextField();
+	private JTextField txtMensagem = new JTextField();
+	private JPasswordField campoSenha = new JPasswordField();
+
 	private JPanel pnlPainel = new JPanel();
 	private JButton btnOk = new JButton("Concluir");
 
@@ -28,20 +44,37 @@ public class EnviarEmail extends JFrame implements ActionListener {
 	}
 
 	public void GerarTela() {
-		this.setSize(new Dimension(300, 220));
+		this.setSize(new Dimension(300, 550));
 		setLocationRelativeTo(null);
 		setResizable(false);
-		
-		txtEmail.setBounds(50, 30, 200, 30);
-		campoSenha.setBounds(50, 80, 200, 30);
-		btnOk.setBounds(95, 150, 100, 30);
+
+		lblTitulo.setBounds(50, 40, 200, 30);
+		txtTitulo.setBounds(50, 75, 200, 30);
+		lblDestinatario.setBounds(50, 120, 100, 30);
+		txtDestinatario.setBounds(50, 160, 200, 30);
+		lblMensagem.setBounds(50, 200, 160, 30);
+		txtMensagem.setBounds(50, 240, 200, 30);
+		lblEmail.setBounds(50, 280, 100, 30);
+		txtEmail.setBounds(50, 320, 200, 30);
+		lblSenha.setBounds(50, 360, 200, 30);
+		campoSenha.setBounds(50, 400, 200, 30);
+		btnOk.setBounds(80, 460, 120, 30);
+
 		pnlPainel.setBackground(Color.getHSBColor(135, 202, 235));
-		
+
+		this.add(lblTitulo);
+		this.add(txtTitulo);
+		this.add(lblDestinatario);
+		this.add(txtDestinatario);
+		this.add(lblMensagem);
+		this.add(txtMensagem);
+		this.add(lblEmail);
+		this.add(txtEmail);
+		this.add(lblSenha);
 		this.add(campoSenha);
 		this.add(btnOk);
-		this.add(txtEmail);
 		this.add(pnlPainel);
-		
+
 		btnOk.addActionListener(this);
 		this.setVisible(true);
 
@@ -63,11 +96,37 @@ public class EnviarEmail extends JFrame implements ActionListener {
 		return this.email;
 	}
 
+	public void setMensagem() {
+		this.mensagem = txtMensagem.getText();
+	}
+
+	public String getMensagem() {
+		return this.mensagem;
+	}
+
+	public void setTitulo() {
+		this.titulo = txtTitulo.getText();
+	}
+
+	public String getTitulo() {
+		return this.titulo;
+	}
+
+	public void setDestinatario() {
+		this.destinatario = txtDestinatario.getText();
+	}
+
+	public String getDestinatario() {
+		return this.destinatario;
+	}
 
 	public void autenticar() {
+		setTitulo();
+		setMensagem();
+		setDestinatario();
 		setEmail();
 		setSenha();
-		
+
 		String meuEmail = getEmail();
 		String minhaSenha = getSenha();
 
@@ -80,11 +139,11 @@ public class EnviarEmail extends JFrame implements ActionListener {
 		try {
 
 			email.setFrom(meuEmail);
-			email.setSubject("Salve email por java"); // Título que irá aparecer no email
-			email.setMsg("IIIIII DEU CERTO AHUHAUHUSHHAUHSUHUHAUHSHUASH GGG"); // Aqui vem a mensagem por email
-			email.addTo("riandd3@gmail.com"); // Aqui você escolhe para quem enviar o email
+			email.setSubject(getTitulo()); // Título que irá aparecer no email
+			email.setMsg(getMensagem()); // Aqui vem a mensagem por email
+			email.addTo(getDestinatario()); // Aqui você escolhe para quem enviar o email
 			email.send(); // Envia email
-			System.out.println("Email enviado com sucesso!");
+			JOptionPane.showMessageDialog(null, "enviado com sucesso");
 
 		} catch (Exception e) {
 			e.printStackTrace();
